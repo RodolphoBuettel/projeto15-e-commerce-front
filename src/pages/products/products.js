@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components"
-import Product from "./product.js";
 import axios from "axios";
+import SideBar from "./SideBar.js";
+import Product from "./product.js";
 
 export default function Products() {
 
     const [funkos, setFunkos] = useState([]);
+    const [display, setDisplay] = useState("none");
+    const [position, setPosition] = useState("")
 
+    function OpenMenu(){
+        setDisplay("");
+        setPosition("fixed");
+    }
 
     useEffect(() => {
         const URL = "http://localhost:5000/products";
@@ -22,6 +29,7 @@ export default function Products() {
     }, []);
 
     return (
+        <TravaFundo position={position}>
         <Container>
             <Header>
                 <Name>
@@ -30,7 +38,7 @@ export default function Products() {
                 <Actions>
                     <div><ion-icon name="search-sharp"></ion-icon></div>
                     <div><ion-icon name="bag-sharp"></ion-icon></div>
-                    <div><ion-icon name="menu-sharp"></ion-icon></div>
+                    <div onClick={OpenMenu}><ion-icon name="menu-sharp"></ion-icon></div>
                 </Actions>
             </Header>
             <ItemsContainer>
@@ -39,9 +47,17 @@ export default function Products() {
                 </Items>
             </ItemsContainer>
             <Footer>
-                <h2>Em construção</h2>
+                <h2>BonecosCabeçudos</h2>
+                <Contacts>
+                <div><ion-icon name="logo-facebook"></ion-icon></div>
+                <div><ion-icon name="logo-instagram"></ion-icon></div>
+                <div><ion-icon name="logo-whatsapp"></ion-icon></div>
+                </Contacts>
             </Footer>
+           <SideBar display={display} setPosition={setPosition} setDisplay={setDisplay}/>
+          <MudaBack display={display}></MudaBack>
         </Container>
+        </TravaFundo>
     )
 }
 
@@ -49,6 +65,7 @@ const Container = styled.div`
     background-color: #f3f3f7;
     height: 100%;
     width: 100%;
+    overflow: hidden;
 `
 const Header = styled.div`
     width: 100%;
@@ -72,7 +89,6 @@ margin-left: 10px;
         color: white;
     }
 `
-
 const Actions = styled.div`
 width: 150px;
 display: flex;
@@ -89,17 +105,50 @@ flex-wrap: wrap;
 justify-content: center;
 align-items: center;
 `
-
 const ItemsContainer = styled.div`
 display: flex;
     padding-top: 100px;
 `
-
 const Footer = styled.div`
     width: 100%;
     height: 70px;
     background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     h2{
+        font-family: 'Pacifico', cursive;
+        font-size: 25px;
         color: white;
+        margin-left: 10px;
     }
+`
+const Contacts = styled.div`
+width: 250px;
+display: flex;
+justify-content: space-around;
+div{
+    font-size: 35px;
+color:white;
+   } 
+`
+const TravaFundo = styled.div`
+    position: ${prop => prop.position};
+    top: 0;
+    z-index: 5;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(27,27,27,.3);
+
+`
+const MudaBack = styled.div`
+display: ${props => props.display};
+    position:fixed;
+    top: 0;
+    z-index: 5;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(27,27,27,.3);
 `
