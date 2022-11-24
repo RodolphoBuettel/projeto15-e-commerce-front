@@ -1,8 +1,25 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components"
 import Product from "./product.js";
+import axios from "axios";
+
 export default function Products() {
 
-    const arrTest = [1, 2, 3, 4];
+    const [funkos, setFunkos] = useState([]);
+
+
+    useEffect(() => {
+        const URL = "http://localhost:5000/products";
+        const promise = axios.get(URL);
+
+        promise.then((res) => {
+            setFunkos(res.data);
+        })
+
+        promise.catch((err) => {
+            console.log(err.response.data);
+        })
+    }, []);
 
     return (
         <Container>
@@ -18,7 +35,7 @@ export default function Products() {
             </Header>
             <ItemsContainer>
                 <Items>
-                    {arrTest.map((n, index) => <Product n={n} key={index} />)}
+                    {funkos.map((n, index) => <Product n={n} key={index} />)}
                 </Items>
             </ItemsContainer>
             <Footer>

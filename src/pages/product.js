@@ -1,13 +1,15 @@
 import styled from "styled-components";
-import FunkoExemple from "../Assets/funkoIchigo.jpg";
 
 export default function Product({ n }) {
+
+    const {name, price, description, imagem} = n;
+
     return (
         <Funko>
-            <ContainImage><img src={FunkoExemple} alt="funko" /></ContainImage>
-            <Name><h2>Ichigo</h2></Name>
-            <Description><h2>SUBSTITUTO DE SHINIGAME</h2></Description>
-            <Price><h2>R$50,00</h2></Price>
+            <ContainImage><img src={imagem} alt="funko" /></ContainImage>
+            <Name><h2>{name}</h2></Name>
+            <Description><h2>{description}</h2></Description>
+            <Price><h2>R${price}</h2></Price>
             <AddProduct>
                 <h2>Adicionar no carrinho</h2>
             </AddProduct>
