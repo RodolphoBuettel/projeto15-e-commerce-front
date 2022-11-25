@@ -6,7 +6,7 @@ function UserProvider({ children }) {
 
     
     return (
-        <UserContext.Provider value={children}>
+        <UserContext.Provider value>
             {children}
         </UserContext.Provider>
     );
