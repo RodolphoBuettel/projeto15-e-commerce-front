@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 export default function Product({ n }) {
 
-    const {name, price, description, imagem} = n;
+    const {name, price, description, image} = n;
 
     return (
         <Funko>
-            <ContainImage><img src={imagem} alt="funko" /></ContainImage>
+            <ContainImage><img src={image} alt="funko" /></ContainImage>
             <Name><h2>{name}</h2></Name>
             <Description><h2>{description}</h2></Description>
             <Price><h2>R${price}</h2></Price>
