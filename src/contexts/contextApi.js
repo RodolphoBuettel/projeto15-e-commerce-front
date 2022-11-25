@@ -1,24 +1,12 @@
-import { createContext, useState} from "react";
+import { createContext, useState } from "react"; 
 
 const UserContext = createContext();
 
 function UserProvider({ children }) {
-    
-    const [email, setEmail] = useState("");
-    const [name, setName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [country, setCountry] = useState("");
-    const [city, setCity] = useState("");
-    const [address, setAddress] = useState("");
-    const [numberCard, setNumberCard] = useState("");
-    const [nameCard, setNameCard] = useState("");
-    const [validity, setValidity] = useState("");
-    const [securityCode, setSecurityCode] = useState("");
-    
+
+    const [datauser, setDataUser] = useState(); 
     return (
-        <UserContext.Provider value={{email, setEmail, name, setName, lastName, setLastName, country, setCountry,
-         city, setCity, address, setAddress, numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity, 
-         securityCode, setSecurityCode}}>
+        <UserContext.Provider value={{datauser, setDataUser}}>
             {children}
         </UserContext.Provider>
     );

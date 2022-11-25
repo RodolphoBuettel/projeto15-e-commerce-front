@@ -2,8 +2,9 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import GlobalStyle from "./GlobalStyle.js";
 import { UserProvider } from "./contexts/contextApi.js";
 import Products from "./pages/products/products.js";
-import Checkout from "./pages/checkout/Checkout.js";
-import Payment from "./pages/payment/payment.js";
+import Signup from "./pages/Signup.js";
+import Signin from "./pages/Signin.js";
+
 
 export default function App() {
   return (
@@ -12,8 +13,9 @@ export default function App() {
        <GlobalStyle/>
            <Routes>
            <Route path="/products" element = {<Products/>}/>
-           <Route path="/checkout" element = {<Checkout/>}/>
-           <Route path="/payment" element = {<Payment/>}/>
+           <Route path="/" element = {<Signin/>}/>
+           <Route path="/signup" element = {<Signup/>}/>
+           <Route path="/signin" element = {<Signin/>}/>
            </Routes>
    </BrowserRouter>
    </UserProvider>
