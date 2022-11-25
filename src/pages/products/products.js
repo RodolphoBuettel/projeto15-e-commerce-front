@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components"
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import SideBar from "./SideBar.js";
 import Product from "./product.js";
 
@@ -8,12 +9,16 @@ export default function Products() {
 
     const [funkos, setFunkos] = useState([]);
     const [display, setDisplay] = useState("none");
-    const [position, setPosition] = useState("")
+    const [position, setPosition] = useState("");
+
+    const navigate = useNavigate();
 
     function OpenMenu(){
         setDisplay("");
         setPosition("fixed");
     }
+
+    const token = JSON.parse(localStorage.getItem('token'));
 
     useEffect(() => {
         const URL = "http://localhost:5000/products";
@@ -25,6 +30,7 @@ export default function Products() {
 
         promise.catch((err) => {
             console.log(err.response.data);
+            navigate("/signin");
         })
     }, []);
 
