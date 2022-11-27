@@ -7,7 +7,6 @@ import Signin from "./pages/Signin.js";
 import {Cart} from "./pages/cart/Cart.js";
 import Checkout from "./pages/checkout/Checkout.js";
 import Payment from "./pages/payment/payment.js";
-import Finish from "./pages/finish/Finish.js";
 
 export default function App() {
   localStorage.clear();
@@ -23,7 +22,6 @@ export default function App() {
            <Route path="/cart" element = {<Cart/>}/>
            <Route path="/checkout" element = {<Checkout/>}/>
            <Route path="/payment" element = {<Payment/>}/>
-           <Route path="/finish" element = {<Finish/>}/>
            </Routes>
    </BrowserRouter>
    </UserProvider>
