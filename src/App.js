@@ -8,8 +8,8 @@ import {Cart} from "./pages/cart/Cart.js";
 import Checkout from "./pages/checkout/Checkout.js";
 import Payment from "./pages/payment/payment.js";
 
-
 export default function App() {
+  localStorage.clear();
   return (
     <UserProvider>
     <BrowserRouter>

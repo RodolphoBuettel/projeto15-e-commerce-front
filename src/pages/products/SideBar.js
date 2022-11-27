@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 
 
 export default function SideBar({ display, setDisplay, setPosition }) {
+
+    const navigate = useNavigate();
 
     function CloseMenu() {
         setDisplay("none");
@@ -23,7 +26,7 @@ export default function SideBar({ display, setDisplay, setPosition }) {
                     </ul>
                     <ProductsContent>
                         <ul>
-                            <li><h3>Animes</h3></li>
+                            <li><h3 onClick={()=> navigate("/products")}>Produtos</h3></li>
                         </ul>
                     </ProductsContent>
                 </Sideways>
