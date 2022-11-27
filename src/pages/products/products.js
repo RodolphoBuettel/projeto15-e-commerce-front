@@ -24,9 +24,6 @@ export default function Products() {
         setPosition("fixed");
     }
 
-    const token = JSON.parse(localStorage.getItem('token'));
-
-
     useEffect(() => {
         const URL = "http://localhost:5000/products";
         const promise = axios.get(URL);
