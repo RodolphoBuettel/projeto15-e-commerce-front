@@ -15,9 +15,11 @@ function UserProvider({ children }) {
     const [nameCard, setNameCard] = useState("");
     const [validity, setValidity] = useState("");
     const [securityCode, setSecurityCode] = useState("");
+    const [cart, setCart] = useState([]);
+    const [cartItemsQnt, setCartItemsQnt ] = useState(0);
 
     return (
-        <UserContext.Provider value={{datauser, setDataUser, email, setEmail, name, setName, lastName, setLastName, country, setCountry,
+        <UserContext.Provider value={{datauser, setDataUser, cart, setCart, cartItemsQnt, setCartItemsQnt, email, setEmail, name, setName, lastName, setLastName, country, setCountry,
             city, setCity, address, setAddress, numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity, 
             securityCode, setSecurityCode}}>
             {children}

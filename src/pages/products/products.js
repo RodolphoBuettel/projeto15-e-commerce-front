@@ -4,12 +4,18 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SideBar from "./SideBar.js";
 import Product from "./product.js";
+import { useContext } from "react";
+import UserContext from "../../contexts/contextApi.js";
+import { createCart, findCart } from "../../services/cart.js";
+
 
 export default function Products() {
 
     const [funkos, setFunkos] = useState([]);
     const [display, setDisplay] = useState("none");
     const [position, setPosition] = useState("");
+
+    const {cart, setCart, cartItemsQnt, setCartItemsQnt} = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -18,13 +24,11 @@ export default function Products() {
         setPosition("fixed");
     }
 
-    const token = JSON.parse(localStorage.getItem('token'));
-
     useEffect(() => {
         const URL = "http://localhost:5000/products";
         const promise = axios.get(URL);
 
-        promise.then((res) => {
+        promise.then((res) => { 
             setFunkos(res.data);
         })
 
@@ -32,18 +36,40 @@ export default function Products() {
             console.log(err.response.data);
             navigate("/signin");
         })
+        getCart();
     }, []);
+
+     function getCart(){
+        const token = localStorage.getItem('bc-cart');
+
+        if(!!token){
+            findCart(JSON.parse(token)).then((res) => {
+                setCart(res.data.items);
+                console.log(res.data.items);
+                const itemsQnt = cart.reduce((result, item) =>  result + item.qnt,0);
+                setCartItemsQnt(itemsQnt);
+                localStorage.setItem('bc-cart', JSON.stringify(cart));
+                
+              }).catch(
+                console.log("não há carrnho salvo")
+              );
+        }
+
+    } 
 
     return (
         <TravaFundo position={position}>
         <Container>
             <Header>
-                <Name>
+                <Name onClick={() => navigate("/")}>
                     <h1>BonecosCabeçudos</h1>
                 </Name>
                 <Actions>
                     <div><ion-icon name="search-sharp"></ion-icon></div>
-                    <div><ion-icon name="bag-sharp"></ion-icon></div>
+                    <div onClick={() => navigate("/cart")}>
+                        <div>{ cartItemsQnt > 0 ? cartItemsQnt : "" }</div>
+                        <ion-icon name="bag-sharp"></ion-icon>
+                    </div>
                     <div onClick={OpenMenu}><ion-icon name="menu-sharp"></ion-icon></div>
                 </Actions>
             </Header>

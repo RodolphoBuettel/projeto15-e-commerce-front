@@ -4,20 +4,23 @@ import { UserProvider } from "./contexts/contextApi.js";
 import Products from "./pages/products/products.js";
 import Signup from "./pages/Signup.js";
 import Signin from "./pages/Signin.js";
+import {Cart} from "./pages/cart/Cart.js";
 import Checkout from "./pages/checkout/Checkout.js";
 import Payment from "./pages/payment/payment.js";
 import Finish from "./pages/finish/Finish.js";
 
 export default function App() {
+  localStorage.clear();
   return (
     <UserProvider>
     <BrowserRouter>
        <GlobalStyle/>
            <Routes>
            <Route path="/products" element = {<Products/>}/>
-           <Route path="/" element = {<Signin/>}/>
+           <Route path="/" element = {<Products/>}/>
            <Route path="/signup" element = {<Signup/>}/>
            <Route path="/signin" element = {<Signin/>}/>
+           <Route path="/cart" element = {<Cart/>}/>
            <Route path="/checkout" element = {<Checkout/>}/>
            <Route path="/payment" element = {<Payment/>}/>
            <Route path="/finish" element = {<Finish/>}/>

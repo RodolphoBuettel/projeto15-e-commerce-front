@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useContext } from "react"
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
@@ -7,17 +8,43 @@ import UserContext from "../../contexts/contextApi"
 export default function Payment() {
 
     const { numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity,
-        securityCode, setSecurityCode } = useContext(UserContext);
+        securityCode, setSecurityCode, email, name, address, city, country } = useContext(UserContext);
 
+    const token = JSON.parse(localStorage.getItem('token'));
     const navigate = useNavigate();
 
-    function Continue(e) {
+    function finishOrder(e) {
         e.preventDefault();
-        navigate("/finish")
+
+        const URL = "http://localhost:5000/finish";
+
+        const orderInformations = {
+            email,
+            name,
+            country,
+            city,
+            address,
+            paymentType: "cartão de crédito"
+        }
+
+        const promisse = axios.post(URL, orderInformations, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+
+        promisse.then((res) => {
+            console.log(res.data);
+            alert("Seu pedido foi finalizado com sucesso.");
+            navigate("/products");
+        });
+        promisse.catch((err) => {
+            console.log(err)
+        });
     }
 
     return (
-        <PaymentForm onSubmit={Continue}>
+        <PaymentForm onSubmit={finishOrder}>
             <label>Numero do cartão</label>
             <input
                 id="cartao"
