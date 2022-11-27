@@ -24,8 +24,9 @@ export function Cart() {
 
     function saveCart(){
         const token = JSON.parse(localStorage.getItem("token"));
-        if(!!token){
-            navigate("/signin");
+        if(!token){
+            return navigate("/signin");
+
         }
         if(!!cart){
             createCart(cart, token).then((res) => {

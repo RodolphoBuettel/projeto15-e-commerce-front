@@ -33,32 +33,66 @@ export default function Products() {
 
         promise.then((res) => { 
             setFunkos(res.data);
+            
         })
 
         promise.catch((err) => {
             console.log(err.response.data);
             navigate("/signin");
         })
-        getCart();
+        
     }, []);
 
-     function getCart(){
-        const token = localStorage.getItem('bc-cart');
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        const storageCart = localStorage.getItem('bc-cart');
 
         if(!!token){
             findCart(JSON.parse(token)).then((res) => {
-                setCart(res.data.items);
-                console.log(res.data.items);
+                setCart(res.data.cart.items);
+                console.log(res.data.cart.items);
                 const itemsQnt = cart.reduce((result, item) =>  result + item.qnt,0);
+                
                 setCartItemsQnt(itemsQnt);
                 localStorage.setItem('bc-cart', JSON.stringify(cart));
+
                 
               }).catch(
                 console.log("não há carrnho salvo")
               );
         }
 
-    } 
+        if(!!storageCart){
+            setCart(JSON.parse(storageCart));
+            const itemsQnt = cart.reduce((result, item) =>  result + item.qnt,0);
+                
+            setCartItemsQnt(itemsQnt);
+        }
+        
+    }, []);
+
+
+   /*   function getCart(){
+        const token = localStorage.getItem('token');
+
+        if(!!token){
+            findCart(JSON.parse(token)).then((res) => {
+                setCart(res.data.cart.items);
+                console.log(res.data.cart.items);
+                const newCart = cart;
+                const itemsQnt = newCart.reduce((result, item) =>  result + item.qnt,0);
+                
+                setCartItemsQnt(itemsQnt);
+                localStorage.setItem('bc-cart', JSON.stringify(cart));
+
+                
+              }).catch(
+                console.log("não há carrnho salvo")
+              );
+        }
+
+    }  */
 
     return (
         <TravaFundo position={position}>
