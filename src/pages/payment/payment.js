@@ -8,9 +8,12 @@ export default function Payment() {
     const {numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity, 
         securityCode, setSecurityCode} = useContext(UserContext);
 
+    function finishOrder(){
+        alert("Seu pedido foi finalizado com sucesso.");
+    }
 
     return (
-        <PaymentForm>
+        <PaymentForm onSubmit={(e) => e.preventDefault()}>
             <label>Numero do cartão</label>
             <input
                 id="cartao"
@@ -44,7 +47,7 @@ export default function Payment() {
                 placeholder=" Atrás do cartão, 3 digítos "
                 required />
             
-            <button type="submit">Confirmar informações</button>
+            <button onClick={() => finishOrder()}>Confirmar informações</button>
         </PaymentForm>
     )
 }

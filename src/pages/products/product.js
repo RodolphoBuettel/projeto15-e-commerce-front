@@ -1,8 +1,14 @@
 import styled from "styled-components";
+import { addToCart } from "../cart/Cart.js";
+import { useContext } from "react";
+import UserContext from "../../contexts/contextApi.js";
 
 export default function Product({ n }) {
 
-    const {name, price, description, image} = n;
+    const {cart, setCart, cartItemsQnt, setCartItemsQnt} = useContext(UserContext);
+
+    const { name, price, description, image} = n;
+
 
     return (
         <Funko>
@@ -10,7 +16,7 @@ export default function Product({ n }) {
             <Name><h2>{name}</h2></Name>
             <Description><h2>{description}</h2></Description>
             <Price><h2>R${price}</h2></Price>
-            <AddProduct>
+            <AddProduct onClick={() => addToCart({prod: n, cart, setCart, cartItemsQnt, setCartItemsQnt})}>
                 <h2>Adicionar no carrinho</h2>
             </AddProduct>
         </Funko>
@@ -42,6 +48,7 @@ position: absolute;
     h2{
         color: white;
     }
+    cursor: pointer;
 `
 const ContainImage = styled.div`
   margin-left:20px;
@@ -78,7 +85,7 @@ h2{
 `
 const Price = styled.div`
     width: 260px;
-height: 18px;
+    height: 18px;
     h2{
         font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
         font-size: 23px;

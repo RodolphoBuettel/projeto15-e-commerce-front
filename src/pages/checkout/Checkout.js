@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import styled from "styled-components"
 import UserContext from "../../contexts/contextApi"
-
+import { useNavigate } from "react-router-dom";
 
 
 export default function Checkout() {
@@ -9,9 +9,11 @@ export default function Checkout() {
    const {email, setEmail, name, setName, lastName, setLastName, country, setCountry,
     city, setCity, address, setAddress} = useContext(UserContext);
 
+    const navigate = useNavigate();
+
     return (
         <Container>
-            <ContactInfomation>
+            <ContactInfomation onSubmit={(e) => e.preventDefault()}>
                 <input
                     id="email"
                     type="email"
@@ -54,7 +56,7 @@ export default function Checkout() {
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder=" Endereço"
                     required />
-                <button type="submit">Continue para o pagamento</button>
+                <button onClick={() => navigate("/payment")}>Continue para o pagamento</button>
             </ContactInfomation>
         </Container>
     )
