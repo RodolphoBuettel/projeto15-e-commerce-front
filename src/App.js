@@ -6,7 +6,7 @@ import Signup from "./pages/Signup.js";
 import Signin from "./pages/Signin.js";
 import Checkout from "./pages/checkout/Checkout.js";
 import Payment from "./pages/payment/payment.js";
-
+import Finish from "./pages/finish/Finish.js";
 
 export default function App() {
   return (
@@ -20,6 +20,7 @@ export default function App() {
            <Route path="/signin" element = {<Signin/>}/>
            <Route path="/checkout" element = {<Checkout/>}/>
            <Route path="/payment" element = {<Payment/>}/>
+           <Route path="/finish" element = {<Finish/>}/>
            </Routes>
    </BrowserRouter>
    </UserProvider>

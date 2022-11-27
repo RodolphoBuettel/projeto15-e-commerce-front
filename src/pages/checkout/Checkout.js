@@ -1,4 +1,5 @@
 import { useContext } from "react"
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../contexts/contextApi"
 
@@ -6,12 +7,19 @@ import UserContext from "../../contexts/contextApi"
 
 export default function Checkout() {
 
+    const navigate = useNavigate();
+
+    function Continue(e){
+        e.preventDefault();
+        navigate("/payment");
+    }
+
    const {email, setEmail, name, setName, lastName, setLastName, country, setCountry,
     city, setCity, address, setAddress} = useContext(UserContext);
 
     return (
         <Container>
-            <ContactInfomation>
+            <ContactInfomation onSubmit={Continue}>
                 <input
                     id="email"
                     type="email"

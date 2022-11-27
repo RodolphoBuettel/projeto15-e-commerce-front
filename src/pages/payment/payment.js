@@ -1,16 +1,23 @@
 import { useContext } from "react"
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import UserContext from "../../contexts/contextApi"
 
 
 export default function Payment() {
 
-    const {numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity, 
-        securityCode, setSecurityCode} = useContext(UserContext);
+    const { numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity,
+        securityCode, setSecurityCode } = useContext(UserContext);
 
+    const navigate = useNavigate();
+
+    function Continue(e) {
+        e.preventDefault();
+        navigate("/finish")
+    }
 
     return (
-        <PaymentForm>
+        <PaymentForm onSubmit={Continue}>
             <label>Numero do cartão</label>
             <input
                 id="cartao"
@@ -43,13 +50,13 @@ export default function Payment() {
                 onChange={(e) => setSecurityCode(e.target.value)}
                 placeholder=" Atrás do cartão, 3 digítos "
                 required />
-            
+
             <button type="submit">Confirmar informações</button>
         </PaymentForm>
     )
 }
 
-const PaymentForm = styled.div`
+const PaymentForm = styled.form`
 width: 100%;
 display: flex;
 flex-direction: column;
