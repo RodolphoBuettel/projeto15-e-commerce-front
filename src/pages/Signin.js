@@ -10,7 +10,7 @@ import { getCart } from "./cart/Cart.js";
 export default function Signin() {
   const [form, setForm] = useState({});
   const navigate = useNavigate();
-  const { setDataUser } = useContext(UserContext);
+  const { setDataUser, dataUser  } = useContext(UserContext);
   
 
   function handleForm({ value, name }) {
@@ -25,6 +25,7 @@ export default function Signin() {
     signin(form).then((res) => {
       localStorage.setItem('token', JSON.stringify(res.data.token));
       setDataUser(res.data.user);
+      console.log("Esse é o nome do user: "+dataUser?.name)
       navigate("/products");
     }).catch((res) => {
       alert("Revise suas credenciais.");

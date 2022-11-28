@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 function UserProvider({ children }) {
 
-    const [datauser, setDataUser] = useState(); 
+    const [dataUser, setDataUser] = useState(); 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -20,7 +20,7 @@ function UserProvider({ children }) {
     const [refresh, setRefresh] = useState(false);
 
     return (
-        <UserContext.Provider value={{ refresh, setRefresh, datauser, setDataUser, cart, setCart, cartItemsQnt, setCartItemsQnt, email, setEmail, name, setName, lastName, setLastName, country, setCountry,
+        <UserContext.Provider value={{ refresh, setRefresh, dataUser, setDataUser, cart, setCart, cartItemsQnt, setCartItemsQnt, email, setEmail, name, setName, lastName, setLastName, country, setCountry,
             city, setCity, address, setAddress, numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity, 
             securityCode, setSecurityCode}}>
             {children}
