@@ -18,7 +18,7 @@ export default function SideBar({ display, setDisplay, setPosition }) {
                     <ion-icon name="close-outline"></ion-icon>
                 </Close>
                 <Perfil>
-                    <ion-icon name="person-circle-sharp"></ion-icon>
+                    <ion-icon name="person-circle-sharp"></ion-icon>    
                 </Perfil>
                 <Sideways>
                     <ul>

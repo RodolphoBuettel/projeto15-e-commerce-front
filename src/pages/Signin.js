@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signin } from "../services/auth.js";
 import { useContext } from "react";
 import UserContext from "../contexts/contextApi";
+import { getCart } from "./cart/Cart.js";
 
 export default function Signin() {
   const [form, setForm] = useState({});
@@ -22,8 +23,8 @@ export default function Signin() {
   function handleSendForm(e) {
     e.preventDefault();
     signin(form).then((res) => {
-      setDataUser(res.data.user);
       localStorage.setItem('token', JSON.stringify(res.data.token));
+      setDataUser(res.data.user);
       navigate("/products");
     }).catch((res) => {
       alert("Revise suas credenciais.");

@@ -6,7 +6,7 @@ import SideBar from "../products/SideBar.js";
 import { useContext } from "react";
 import UserContext from "../../contexts/contextApi.js";
 import CardCart from "./cardCart.js";
-import { createCart, findCart } from "../../services/cart.js";
+import { createCart, findCart, updateCart, closeCart, deleteCart } from "../../services/cart.js";
 
 export function Cart() {
 
@@ -17,25 +17,28 @@ export function Cart() {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        getCart({ cart, setCart, cartItemsQnt, setCartItemsQnt })
+
+    }, []);
+
+
     function OpenMenu() {
         setDisplay("");
         setPosition("fixed");
     }
 
-    function saveCart(){
+    async function saveCart() {
         const token = JSON.parse(localStorage.getItem("token"));
-        if(!token){
+        if (!token) {
             return navigate("/signin");
 
         }
-        if(!!cart){
-            createCart(cart, token).then((res) => {
-                navigate("/checkout");
-              }).catch(
-                alert("Erro ao salvar carrinho")
-              )
+        if (cart?.length > 0) {
+            updateApiCart({cart});
+            navigate("/checkout");
         }
-           
+
     }
 
     return (
@@ -48,7 +51,7 @@ export function Cart() {
                     <Actions>
                         <div><ion-icon name="search-sharp"></ion-icon></div>
                         <div onClick={() => navigate("/cart")}>
-                            <div>{cartItemsQnt > 0 ? cartItemsQnt : ""}</div>
+                            <div>{cart.length > 0 ? cart.reduce((result, item) => result + item.qnt, 0) : ""}</div>
                             <ion-icon name="bag-sharp"></ion-icon>
                         </div>
                         <div onClick={OpenMenu}><ion-icon name="menu-sharp"></ion-icon></div>
@@ -64,7 +67,7 @@ export function Cart() {
                         <div className="cart-details">
                             <div>
                                 <span>RESUMO</span>
-                                <span>{cartItemsQnt} ITENS</span>
+                                <span>{cart.reduce((result, item) => result + item.qnt, 0)} ITENS</span>
                             </div>
                             <div>
                                 <span>SUBTOTAL</span>
@@ -119,10 +122,113 @@ export function Cart() {
     )
 }
 
-export function addToCart({ prod, cart, setCart, cartItemsQnt, setCartItemsQnt }) {
 
 
-    console.log("Adicionei o produto: " + prod._id);
+export async function getCart({ cart, setCart, cartItemsQnt, setCartItemsQnt }) {
+    const token = localStorage.getItem('token');
+    const storageCart = JSON.parse(localStorage.getItem('bc-cart'));
+    const hasCartstoraged = storageCart?.length > 0;
+
+    let newCart = [];
+
+    if (!!token && cart?.length < 1) {
+
+        console.log("Pegando os dados carrinho do banco.");
+
+        await findCart(JSON.parse(token)).then((res) => {
+            const apiCart = res.data?.cart?.items;
+            if (apiCart?.length > 0) {
+                newCart = apiCart;
+                console.log("Salavndo dados do banco na new cart")
+            }
+
+            if (hasCartstoraged && apiCart?.length < 1) {
+                newCart = storageCart;
+                console.log("Salvando dados do lstorage na new cart")
+            }
+
+            if(!hasCartstoraged && apiCart?.length > 0){
+                deleteApiCart({cart, setCart});
+            }
+
+
+
+        }).catch(
+            console.log("")
+        );
+    }
+
+    if (hasCartstoraged && !token) {
+        newCart = storageCart;
+        console.log("salvando dados do lstorage na new cart");
+    }
+    console.log("Newcart abaixo")
+    console.log(newCart);
+
+    if (newCart?.length > 0) {
+        console.log("savando new cart na state cart")
+        setCart(newCart);
+        localStorage.setItem('bc-cart', JSON.stringify(newCart));
+    }
+    
+    const itemsQnt = cart.reduce((result, item) => result + item.qnt, 0);
+    setCartItemsQnt(itemsQnt);
+    
+
+
+
+    /*  if(hasCartstoraged && !!token && cart !== [] && !!cart){
+         createCart(cart, token).then((res) => {
+             console.log("cart salvo no banco");
+           }).catch(
+             alert("Erro ao salvar carrinho")
+         );
+     } */
+
+}
+
+export async function updateApiCart({ cart }) {
+    const token = localStorage.getItem('token');
+    console.log("updateapicart: "+cart?.length > 0 && !!token)
+    if (cart?.length > 0 && !!token) {
+        await updateCart(cart, JSON.parse(token)).then((res) => {
+            console.log("updateapicart: Atualizei caarrinho no banco.");
+        }).catch(
+            console.log("updateapicart: Não pude atualizar carrinho no banco.")
+        );
+    }
+}
+
+export async function clearApiCart({setCart}) {
+    const token = localStorage.getItem('token');
+    if (!!token) {
+        await closeCart(JSON.parse(token)).then((res) => {
+            localStorage.removeItem('bc-cart');
+            setCart([]);
+            console.log("Consegui fechar o carrinho da api")
+        }).catch(
+            console.log("Não consegui fechar o carrinho da api")
+        );
+    }
+
+}
+
+export async function deleteApiCart({cart, setCart}) {
+    const token = localStorage.getItem('token');
+    if (!!token && cart?.length === 0) {
+        await deleteCart(JSON.parse(token)).then((res) => {
+            localStorage.removeItem('bc-cart');
+            setCart([]);
+            console.log("Consegui apagar o carrinho da api")
+        }).catch(
+            console.log("Não consegui apagar o carrinho da api")
+        );
+    }
+
+}
+
+export async function addToCart({ prod, cart, setCart, cartItemsQnt, setCartItemsQnt }) {
+
     let newCart = [];
 
     const isInCart = cart.some((item) => item.product._id === prod._id);
@@ -136,10 +242,11 @@ export function addToCart({ prod, cart, setCart, cartItemsQnt, setCartItemsQnt }
     setCart(newCart);
     setCartItemsQnt(cartItemsQnt + 1);
     localStorage.setItem('bc-cart', JSON.stringify(newCart));
+    await updateApiCart({cart});
 
 }
 
-export function removeFromCart({ prod, cart, setCart, cartItemsQnt, setCartItemsQnt }) {
+export async function removeFromCart({ prod, cart, setCart, cartItemsQnt, setCartItemsQnt }) {
 
     let newCart = [];
 
@@ -155,9 +262,11 @@ export function removeFromCart({ prod, cart, setCart, cartItemsQnt, setCartItems
     setCart(newCart);
     setCartItemsQnt(cartItemsQnt - 1);
     localStorage.setItem('bc-cart', JSON.stringify(newCart));
+    await updateApiCart({cart});
+
 }
 
-export function removeAllFromCart({ prod, cart, setCart, cartItemsQnt, setCartItemsQnt }) {
+export async function removeAllFromCart({ prod, cart, setCart, cartItemsQnt, setCartItemsQnt }) {
 
     let newCart = [];
 
@@ -168,6 +277,7 @@ export function removeAllFromCart({ prod, cart, setCart, cartItemsQnt, setCartIt
     setCart(newCart);
     setCartItemsQnt(cartItemsQnt - qnt);
     localStorage.setItem('bc-cart', JSON.stringify(newCart));
+    await updateApiCart({cart});
 }
 
 const Container = styled.div`
