@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import styled from "styled-components"
 import UserContext from "../../contexts/contextApi";
 import { clearApiCart } from "../cart/Cart.js";
@@ -18,7 +17,7 @@ export default function Payment() {
 
     useEffect(() => {
 
-        const URL = "http://localhost:5000/cart";
+        const URL = "https://api-bonecoscabecudos.onrender.com/cart";
 
         const promise = axios.get(
             URL, {
@@ -42,7 +41,7 @@ export default function Payment() {
     function finishOrder(e) {
         e.preventDefault();
 
-        const URL = "http://localhost:5000/finish";
+        const URL = "https://api-bonecoscabecudos.onrender.com/finish";
 
         const orderInformations = {
             email,

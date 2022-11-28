@@ -1,14 +1,29 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components"
+import { useNavigate, Link } from "react-router-dom";
+import styled from "styled-components";
 
 
-export default function SideBar({ display, setDisplay, setPosition }) {
+
+export default function SideBar({ user, display, setDisplay, setPosition }) {
+
+    const {userData, setUserData } = user;
+
+    const name = userData?.name.trim()[0];
 
     const navigate = useNavigate();
 
     function CloseMenu() {
         setDisplay("none");
         setPosition("");
+    }
+
+    function signout(){
+        const token = localStorage.getItem("token");
+        if(!!token){
+            localStorage.removeItem("token");
+            setUserData({});
+            navigate("/products");
+        }
+        
     }
 
     return (
@@ -18,7 +33,8 @@ export default function SideBar({ display, setDisplay, setPosition }) {
                     <ion-icon name="close-outline"></ion-icon>
                 </Close>
                 <Perfil>
-                    <ion-icon name="person-circle-sharp"></ion-icon>    
+                    <ion-icon name="person-circle-sharp"></ion-icon>
+                    <span>{name ? `Olá ${name}` : <Link to="/signin">Faça Login</Link>}  </span>
                 </Perfil>
                 <Sideways>
                     <ul>
@@ -27,6 +43,7 @@ export default function SideBar({ display, setDisplay, setPosition }) {
                     <ProductsContent>
                         <ul>
                             <li><h3 onClick={()=> navigate("/products")}>Produtos</h3></li>
+                            <li><h3 onClick={()=> signout()}>Sair</h3></li>
                         </ul>
                     </ProductsContent>
                 </Sideways>
@@ -47,6 +64,11 @@ const Sidebar = styled.div`
     right: 0px;
     height: 100%;
     z-index: 6;
+
+    Link{
+        font-size: 15px;
+        text-decoration: none;
+    }
    
 `
 const Close = styled.div`
@@ -60,6 +82,10 @@ font-size: 50px;
     
     margin-top: 20px;
     margin-left: 20px;
+
+    span{
+        font-size: 15px;
+    }
 `
 const Sideways = styled.div`
 margin-top: 40px;

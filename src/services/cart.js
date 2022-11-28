@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://api-bonecoscabecudos.onrender.com";
 
 export function createCart(body, token) {
   const cart = body;
