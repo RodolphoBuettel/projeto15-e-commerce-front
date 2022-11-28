@@ -1,18 +1,43 @@
 import axios from "axios";
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import styled from "styled-components"
 import UserContext from "../../contexts/contextApi";
 import { clearApiCart } from "../cart/Cart.js";
-
 
 export default function Payment() {
 
     const { setCart, numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity,
         securityCode, setSecurityCode, email, name, address, city, country } = useContext(UserContext);
 
+    const [myCart, setMycart] = useState([]);
+
     const token = JSON.parse(localStorage.getItem('token'));
     const navigate = useNavigate();
+
+    useEffect(() => {
+
+        const URL = "http://localhost:5000/cart";
+
+        const promise = axios.get(
+            URL, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        );
+
+        promise.then((res) => {
+          setMycart(res.data.cart.items);
+          console.log(res.data.cart.items);
+        });
+
+        promise.catch((err) => {
+            console.log(err.response.data);
+        });
+
+    }, [token]);
 
     function finishOrder(e) {
         e.preventDefault();
@@ -25,6 +50,7 @@ export default function Payment() {
             country,
             city,
             address,
+            items: myCart,
             paymentType: "cartão de crédito"
         }
 

@@ -37,7 +37,9 @@ export default function Products() {
             console.log(err.response.data);
         })
 
+
     }, []);
+
 
     return (
         <TravaFundo position={position}>
