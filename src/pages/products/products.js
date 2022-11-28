@@ -6,7 +6,7 @@ import SideBar from "./SideBar.js";
 import Product from "./product.js";
 import { useContext } from "react";
 import UserContext from "../../contexts/contextApi.js";
-import { createCart, findCart } from "../../services/cart.js";
+import { getCart} from "../cart/Cart.js";
 
 
 export default function Products() {
@@ -15,11 +15,11 @@ export default function Products() {
     const [display, setDisplay] = useState("none");
     const [position, setPosition] = useState("");
 
-    const {cart, setCart, cartItemsQnt, setCartItemsQnt} = useContext(UserContext);
+    const { cart, setCart, cartItemsQnt, setCartItemsQnt, refresh, setRefresh } = useContext(UserContext);
 
     const navigate = useNavigate();
 
-    function OpenMenu(){
+    function OpenMenu() {
         setDisplay("");
         setPosition("fixed");
     }
@@ -28,67 +28,51 @@ export default function Products() {
         const URL = "http://localhost:5000/products";
         const promise = axios.get(URL);
 
-        promise.then((res) => { 
+        promise.then((res) => {
             setFunkos(res.data);
+            getCart({cart, setCart, cartItemsQnt, setCartItemsQnt});
         })
 
         promise.catch((err) => {
             console.log(err.response.data);
-            navigate("/signin");
         })
-        getCart();
+
+
     }, []);
 
-     function getCart(){
-        const token = localStorage.getItem('bc-cart');
-
-        if(!!token){
-            findCart(JSON.parse(token)).then((res) => {
-                setCart(res.data.items);
-                console.log(res.data.items);
-                const itemsQnt = cart.reduce((result, item) =>  result + item.qnt,0);
-                setCartItemsQnt(itemsQnt);
-                localStorage.setItem('bc-cart', JSON.stringify(cart));
-                
-              }).catch(
-                console.log("não há carrinho salvo")
-              );
-        }
-
-    } 
 
     return (
         <TravaFundo position={position}>
-        <Container>
-            <Header>
-                <Name onClick={() => navigate("/")}>
-                    <h1>BonecosCabeçudos</h1>
-                </Name>
-                <Actions>
-                    <div><ion-icon name="search-sharp"></ion-icon></div>
-                    <div onClick={() => navigate("/cart")}>
-                        <div>{ cartItemsQnt > 0 ? cartItemsQnt : "" }</div>
-                        <ion-icon name="bag-sharp"></ion-icon>
-                    </div>
-                    <div onClick={OpenMenu}><ion-icon name="menu-sharp"></ion-icon></div>
-                </Actions>
-            </Header>
-            <ItemsContainer>
-                <Items>
-                    {funkos.map((n, index) => <Product n={n} key={index} />)}
-                </Items>
-            </ItemsContainer>
-            <Footer>
-                <h2>BonecosCabeçudos</h2>
-                <Contacts>
-                <div><ion-icon name="logo-facebook"></ion-icon></div>
-                <div><ion-icon name="logo-instagram"></ion-icon></div>
-                <div><ion-icon name="logo-whatsapp"></ion-icon></div>
-                </Contacts>
-            </Footer>
-           <SideBar display={display} setPosition={setPosition} setDisplay={setDisplay}/>
-          <MudaBack display={display}></MudaBack>
-        </Container>
+            <Container>
+                <Header>
+                    <Name onClick={() => navigate("/")}>
+                        <h1>BonecosCabeçudos</h1>
+                    </Name>
+                    <Actions>
+                        <div><ion-icon name="search-sharp"></ion-icon></div>
+                        <div onClick={() => navigate("/cart")}>
+                            <div>{cartItemsQnt > 0 ? cartItemsQnt : ""}</div>
+                            <ion-icon name="bag-sharp"></ion-icon>
+                        </div>
+                        <div onClick={OpenMenu}><ion-icon name="menu-sharp"></ion-icon></div>
+                    </Actions>
+                </Header>
+                <ItemsContainer>
+                    <Items>
+                        {funkos.map((n, index) => <Product n={n} key={index} />)}
+                    </Items>
+                </ItemsContainer>
+                <Footer>
+                    <h2>BonecosCabeçudos</h2>
+                    <Contacts>
+                        <div><ion-icon name="logo-facebook"></ion-icon></div>
+                        <div><ion-icon name="logo-instagram"></ion-icon></div>
+                        <div><ion-icon name="logo-whatsapp"></ion-icon></div>
+                    </Contacts>
+                </Footer>
+                <SideBar display={display} setPosition={setPosition} setDisplay={setDisplay} />
+                <MudaBack display={display}></MudaBack>
+            </Container>
         </TravaFundo>
     )
 }

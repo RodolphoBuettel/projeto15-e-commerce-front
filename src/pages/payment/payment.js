@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+
+import styled from "styled-components"
 import UserContext from "../../contexts/contextApi";
+import { clearApiCart } from "../cart/Cart.js";
 
 export default function Payment() {
 
-    const { numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity,
+    const { setCart, numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity,
         securityCode, setSecurityCode, email, name, address, city, country } = useContext(UserContext);
 
     const [myCart, setMycart] = useState([]);
@@ -61,6 +63,7 @@ export default function Payment() {
         promisse.then((res) => {
             console.log(res.data);
             alert("Seu pedido foi finalizado com sucesso.");
+            clearApiCart({setCart});
             navigate("/products");
         });
         promisse.catch((err) => {
