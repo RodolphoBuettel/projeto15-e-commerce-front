@@ -51,7 +51,7 @@ export default function Products() {
                 localStorage.setItem('bc-cart', JSON.stringify(cart));
                 
               }).catch(
-                console.log("não há carrnho salvo")
+                console.log("não há carrinho salvo")
               );
         }
 
