@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://api-bonecoscabecudos.onrender.com";
 
 export function signup(body) {
   const response = axios.post(`${BASE_URL}/sign-up`, body);

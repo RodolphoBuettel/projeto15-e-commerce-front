@@ -15,7 +15,7 @@ export default function Products() {
     const [display, setDisplay] = useState("none");
     const [position, setPosition] = useState("");
 
-    const { cart, setCart, cartItemsQnt, setCartItemsQnt, refresh, setRefresh } = useContext(UserContext);
+    const { userData, setUserData, cart, setCart, cartItemsQnt, setCartItemsQnt, refresh, setRefresh } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export default function Products() {
     }
 
     useEffect(() => {
-        const URL = "http://localhost:5000/products";
+        const URL = "https://api-bonecoscabecudos.onrender.com/products";
         const promise = axios.get(URL);
 
         promise.then((res) => {
@@ -68,7 +68,7 @@ export default function Products() {
                         <div><ion-icon name="logo-whatsapp"></ion-icon></div>
                     </Contacts>
                 </Footer>
-                <SideBar display={display} setPosition={setPosition} setDisplay={setDisplay} />
+                <SideBar  user={{userData, setUserData}} display={display} setPosition={setPosition} setDisplay={setDisplay} />
                 <MudaBack display={display}></MudaBack>
             </Container>
         </TravaFundo>
