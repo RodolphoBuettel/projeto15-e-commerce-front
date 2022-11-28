@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 
 
-export default function SideBar({ user, display, setDisplay, setPosition }) {
+export default function SideBar({ dataUser, setDataUser , display, setDisplay, setPosition }) {
 
-    const {userData, setUserData } = user;
 
-    const name = userData?.name.trim()[0];
+    const name = dataUser?.name.split(" ")[0];
+
+    console.log(dataUser?.name)
 
     const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ export default function SideBar({ user, display, setDisplay, setPosition }) {
         const token = localStorage.getItem("token");
         if(!!token){
             localStorage.removeItem("token");
-            setUserData({});
+            setDataUser({});
             navigate("/products");
         }
         
@@ -83,8 +84,11 @@ font-size: 50px;
     margin-top: 20px;
     margin-left: 20px;
 
+    display: flex;
+    align-items: center;
+
     span{
-        font-size: 15px;
+        font-size: 18px;
     }
 `
 const Sideways = styled.div`

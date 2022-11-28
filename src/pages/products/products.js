@@ -15,7 +15,7 @@ export default function Products() {
     const [display, setDisplay] = useState("none");
     const [position, setPosition] = useState("");
 
-    const { userData, setUserData, cart, setCart, cartItemsQnt, setCartItemsQnt, refresh, setRefresh } = useContext(UserContext);
+    const { dataUser, setDataUser, cart, setCart, cartItemsQnt, setCartItemsQnt, refresh, setRefresh } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -68,7 +68,7 @@ export default function Products() {
                         <div><ion-icon name="logo-whatsapp"></ion-icon></div>
                     </Contacts>
                 </Footer>
-                <SideBar  user={{userData, setUserData}} display={display} setPosition={setPosition} setDisplay={setDisplay} />
+                <SideBar  dataUser={dataUser} setDataUser={setDataUser} display={display} setPosition={setPosition} setDisplay={setDisplay} />
                 <MudaBack display={display}></MudaBack>
             </Container>
         </TravaFundo>
