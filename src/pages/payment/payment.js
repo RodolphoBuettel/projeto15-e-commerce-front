@@ -5,7 +5,6 @@ import styled from "styled-components"
 import UserContext from "../../contexts/contextApi";
 import { clearApiCart } from "../cart/Cart.js";
 
-
 export default function Payment() {
 
     const { setCart, numberCard, setNumberCard, nameCard, setNameCard, validity, setValidity,
